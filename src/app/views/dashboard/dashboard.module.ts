@@ -6,6 +6,11 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import {Xml2jsService} from '../../services/xml2js.service';
+import {HttpClientModule} from '@angular/common/http';
+import {CommonModule} from '@angular/common';
+import {NgxDatatableModule} from '@swimlane/ngx-datatable';
+import {ProgressbarModule} from 'ngx-bootstrap/progressbar';
 
 @NgModule({
   imports: [
@@ -13,8 +18,15 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
     DashboardRoutingModule,
     ChartsModule,
     BsDropdownModule,
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    ProgressbarModule.forRoot(),
+    HttpClientModule,
+    CommonModule,
+    NgxDatatableModule,
   ],
-  declarations: [ DashboardComponent ]
+  declarations: [ DashboardComponent ],
+  providers: [
+    Xml2jsService,
+  ]
 })
 export class DashboardModule { }

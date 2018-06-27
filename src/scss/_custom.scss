@@ -1,1 +1,18 @@
 // Here you can add other styles
+.datatable-row-center.datatable-row-group .datatable-body-cell:nth-child(5) span:after {
+  content: '%';
+  display: inline-block;
+}
+
+.datatable-header-cell:not(:nth-child(1)) {
+  text-align: right;
+}
+
+.datatable-row-center.datatable-row-group .datatable-body-cell:not(:nth-child(1)) {
+  text-align: right;
+}
+
+
+.datatable-header-cell-label {
+  font-weight: bold;
+}

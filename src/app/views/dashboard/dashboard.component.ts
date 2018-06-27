@@ -1,337 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+
+import { Xml2jsService } from '../../services/xml2js.service';
+import {Http, HttpModule} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
+
+import { environment } from '../../../environments/environment';
 
 @Component({
   templateUrl: 'dashboard.component.html'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
-  // lineChart1
-  public lineChart1Data: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart1Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart1Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
-
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 40 - 5,
-          max: 84 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
+  settings = {
+    systemNames: ['Crossdock', 'Lift'],
+    dayTarget: 2000,
+    variables: { // For linking the xml api names
+      employee_list: 'employees',
+      employee: 'employee',
+      picking_list: 'pickings',
+      picking: 'picking',
+      hour: 'hours',
+      picks: 'picked',
+      orders: 'orderscount'
     }
   };
-  public lineChart1Colours: Array<any> = [
-    {
-      backgroundColor: getStyle('--primary'),
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];
-  public lineChart1Legend = false;
-  public lineChart1Type = 'line';
 
-  // lineChart2
-  public lineChart2Data: Array<any> = [
-    {
-      data: [1, 18, 9, 17, 34, 22, 11],
-      label: 'Series A'
-    }
-  ];
-  public lineChart2Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart2Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          color: 'transparent',
-          zeroLineColor: 'transparent'
-        },
-        ticks: {
-          fontSize: 2,
-          fontColor: 'transparent',
-        }
+  private XmlLocation = environment.xmlApi;
 
-      }],
-      yAxes: [{
-        display: false,
-        ticks: {
-          display: false,
-          min: 1 - 5,
-          max: 34 + 5,
-        }
-      }],
-    },
-    elements: {
-      line: {
-        tension: 0.00001,
-        borderWidth: 1
-      },
-      point: {
-        radius: 4,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart2Colours: Array<any> = [
-    { // grey
-      backgroundColor: getStyle('--info'),
-      borderColor: 'rgba(255,255,255,.55)'
-    }
-  ];
-  public lineChart2Legend = false;
-  public lineChart2Type = 'line';
+  refreshInterval;
 
-
-  // lineChart3
-  public lineChart3Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public lineChart3Labels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  public lineChart3Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-      },
-    },
-    legend: {
-      display: false
-    }
-  };
-  public lineChart3Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.2)',
-      borderColor: 'rgba(255,255,255,.55)',
-    }
-  ];
-  public lineChart3Legend = false;
-  public lineChart3Type = 'line';
-
-
-  // barChart1
-  public barChart1Data: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40, 78, 81, 80, 45, 34, 12, 40, 12, 40],
-      label: 'Series A'
-    }
-  ];
-  public barChart1Labels: Array<any> = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16'];
-  public barChart1Options: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips
-    },
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        display: false,
-        barPercentage: 0.6,
-      }],
-      yAxes: [{
-        display: false
-      }]
-    },
-    legend: {
-      display: false
-    }
-  };
-  public barChart1Colours: Array<any> = [
-    {
-      backgroundColor: 'rgba(255,255,255,.3)',
-      borderWidth: 0
-    }
-  ];
-  public barChart1Legend = false;
-  public barChart1Type = 'bar';
-
-  // mainChart
-
-  public mainChartElements = 27;
-  public mainChartData1: Array<number> = [];
-  public mainChartData2: Array<number> = [];
-  public mainChartData3: Array<number> = [];
-
-  public mainChartData: Array<any> = [
-    {
-      data: this.mainChartData1,
-      label: 'Current'
-    },
-    {
-      data: this.mainChartData2,
-      label: 'Previous'
-    },
-    {
-      data: this.mainChartData3,
-      label: 'BEP'
-    }
-  ];
-  /* tslint:disable:max-line-length */
-  public mainChartLabels: Array<any> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Monday', 'Thursday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  /* tslint:enable:max-line-length */
-  public mainChartOptions: any = {
-    tooltips: {
-      enabled: false,
-      custom: CustomTooltips,
-      intersect: true,
-      mode: 'index',
-      position: 'nearest',
-      callbacks: {
-        labelColor: function(tooltipItem, chart) {
-          return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor }
-        }
-      }
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: [{
-        gridLines: {
-          drawOnChartArea: false,
-        },
-        ticks: {
-          callback: function(value: any) {
-            return value.charAt(0);
-          }
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          maxTicksLimit: 5,
-          stepSize: Math.ceil(250 / 5),
-          max: 250
-        }
-      }]
-    },
-    elements: {
-      line: {
-        borderWidth: 2
-      },
-      point: {
-        radius: 0,
-        hitRadius: 10,
-        hoverRadius: 4,
-        hoverBorderWidth: 3,
-      }
-    },
-    legend: {
-      display: false
-    }
-  };
-  public mainChartColours: Array<any> = [
-    { // brandInfo
-      backgroundColor: hexToRgba(getStyle('--info'), 10),
-      borderColor: getStyle('--info'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandSuccess
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--success'),
-      pointHoverBackgroundColor: '#fff'
-    },
-    { // brandDanger
-      backgroundColor: 'transparent',
-      borderColor: getStyle('--danger'),
-      pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
-      borderDash: [8, 5]
-    }
-  ];
-  public mainChartLegend = false;
-  public mainChartType = 'line';
+  data = [];
+  graphData = [];
+  sysGraph = [];
+  employees: any[] = [];
+  system: any[] = [];
+  overall: any = {};
+  hours: any[] = [];
 
   // social box charts
 
-  public brandBoxChartData1: Array<any> = [
-    {
-      data: [65, 59, 84, 84, 51, 55, 40],
-      label: 'Facebook'
-    }
-  ];
-  public brandBoxChartData2: Array<any> = [
-    {
-      data: [1, 13, 9, 17, 34, 41, 38],
-      label: 'Twitter'
-    }
-  ];
-  public brandBoxChartData3: Array<any> = [
-    {
-      data: [78, 81, 80, 45, 34, 12, 40],
-      label: 'LinkedIn'
-    }
-  ];
-  public brandBoxChartData4: Array<any> = [
-    {
-      data: [35, 23, 56, 22, 97, 23, 64],
-      label: 'Google+'
-    }
-  ];
+  public EmployeeGraph = { data: [] };
+  public TotalGraph = { data: [] };
 
-  public brandBoxChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public brandBoxChartLabels: Array<any> = [];
   public brandBoxChartOptions: any = {
     tooltips: {
       enabled: false,
@@ -349,7 +62,7 @@ export class DashboardComponent implements OnInit {
     },
     elements: {
       line: {
-        borderWidth: 2
+        borderWidth: 2,
       },
       point: {
         radius: 0,
@@ -372,18 +85,307 @@ export class DashboardComponent implements OnInit {
   public brandBoxChartLegend = false;
   public brandBoxChartType = 'line';
 
-  public random(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  private dataCache;
+
+  bottomChartDatasets = [];
+  bottomChartLabels = [];
+  bottomChartLegend = true;
+  bottomChartColours = [
+    {
+      backgroundColor: getStyle('--primary'),
+      borderColor: 'rgba(0,0,0,.55)',
+      pointHoverBackgroundColor: '#ccc'
+    }
+  ];
+  bottomChartType = 'bar';
+  bottomChartOptions: any = {
+    tooltips: {
+      enabled: false,
+      custom: CustomTooltips
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display: true,
+        ticks: {
+          callback: function(value, index, values) {
+            return value + ':00';
+          }
+        }
+      }],
+      yAxes: [{
+        display: true,
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3,
+      }
+    },
+    legend: {
+      display: true,
+      position: 'bottom',
+      fullWidth: true,
+    }
+  };
+
+  constructor(
+    private http: HttpClient,
+    public xml2js: Xml2jsService,
+  ) { }
+
+  calculate(hours, type) {
+    let total = 0;
+    hours.forEach(hour => {
+      total = total + parseInt(hour[type], 0);
+    });
+    return total;
   }
 
-  ngOnInit(): void {
-    // generate random values for mainChart
-    for (let i = 0; i <= this.mainChartElements; i++) {
-      this.mainChartData1.push(this.random(50, 200));
-      this.mainChartData2.push(this.random(80, 100));
-      this.mainChartData3.push(65);
+  hexToRgbA(hex, opacity = 1) {
+    let c;
+    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+      c = hex.substring(1).split('');
+      if (c.length === 3) {
+        c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c = '0x' + c.join('');
+      // tslint:disable-next-line no-bitwise
+      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',' + opacity + ')';
+    }
+    throw new Error('Bad Hex');
+  }
+
+
+  getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  getDataOrCached() {
+    if (this.dataCache) {
+      this.http.get(this.XmlLocation, {responseType: 'text'}).subscribe(data => {
+        if (data === this.dataCache) {
+          // Do nothing, cache hasn't changed
+        } else {
+          this.getData();
+        }
+      });
     }
   }
 
-  radioModel: string = 'Month';
+  resetCharts() {
+    this.EmployeeGraph = null;
+    this.TotalGraph = null;
+
+    this.EmployeeGraph = { data: [] };
+    this.TotalGraph = { data: [] };
+  }
+
+
+  getData() {
+
+    this.graphData = [];
+    this.bottomChartDatasets = [];
+
+    this.http.get(this.XmlLocation, {responseType: 'text'}).subscribe(data => {
+      this.dataCache = data;
+      let tmpAllEmployees = [];
+      let tmpEmployees = [];
+      let tmpSystem = [];
+      const tmpAllHourlyPicks = [];
+      const tmpOverall = {
+        targetpercentage: 0,
+        autopicks: 0,
+        autoorders: 0,
+        orders: 0,
+        manualpicks: 0,
+        manualorders: 0,
+        manualpercentage: 0
+      };
+
+      // Parse the xml file to json
+      let parsed = this.xml2js.parse(data);
+      parsed = parsed[this.settings.variables.employee_list][this.settings.variables.employee];
+
+      // Map Pickings to hours
+      tmpAllEmployees = parsed.map((employee) => {
+        const curEmployee = {
+          name: employee.name,
+          picks: [],
+          today: {
+            ratio: 0,
+            picks: {
+              amount: 0,
+              percentage: 0
+            },
+            orders: {
+              amount: 0,
+              percentage: 0
+            }
+          }
+        };
+
+        employee[this.settings.variables.picking_list][this.settings.variables.picking].forEach(item => {
+          const newitem = {
+            hour: item[this.settings.variables.hour],
+            picks: item[this.settings.variables.picks],
+            orders: item[this.settings.variables.orders],
+          };
+          curEmployee.picks.push(newitem);
+        });
+        curEmployee.today.picks.amount = this.calculate(curEmployee.picks, 'picks');
+        curEmployee.today.orders.amount = this.calculate(curEmployee.picks, 'orders');
+        curEmployee.today.ratio = Math.round((curEmployee.today.picks.amount / curEmployee.today.orders.amount) * 100) / 100;
+
+        if (this.settings.systemNames.indexOf(curEmployee.name) === -1 && curEmployee.name !== 'Systeem') {
+          tmpOverall.manualpicks += curEmployee.today.picks.amount;
+          tmpOverall.manualorders += curEmployee.today.orders.amount;
+        } else {
+          tmpOverall.autopicks += curEmployee.today.picks.amount;
+          tmpOverall.autoorders += curEmployee.today.orders.amount;
+        }
+
+        tmpOverall.orders = tmpOverall.orders + curEmployee.today.orders.amount;
+        tmpOverall.targetpercentage = Math.round((tmpOverall.autopicks + tmpOverall.manualpicks) / this.settings.dayTarget * 100);
+
+        return curEmployee;
+      });
+
+      if (this.hours.length !== tmpAllEmployees[0].picks.length) {
+        console.log('NEW');
+        this.resetCharts();
+      } else {
+        console.log('NOT NEW');
+      }
+
+      this.initCharts(tmpAllEmployees[0].picks);
+
+      // Calculating the individual percentage of manual picks
+      tmpAllEmployees = tmpAllEmployees.map(employee => {
+        employee.today.picks.percentage = Math.round(employee.today.picks.amount / tmpOverall.manualpicks * 100);
+        return employee;
+      });
+
+      tmpAllEmployees.forEach(employee => {
+        const hourlyPicks = [];
+        const hours = [];
+        employee.picks.forEach(hour => {
+          // if (hour.picks > 0) {
+            const d = new Date();
+            d.setMinutes(0);
+            d.setSeconds(0);
+            d.setMilliseconds(0);
+            d.setHours(hour.hour);
+            hours.push(d);
+            hourlyPicks.push({ y: hour.picks, x: hour.hour });
+            tmpAllHourlyPicks.push(hour.picks);
+          // }
+        });
+        const line = {
+          data: hourlyPicks,
+          label: employee.name,
+        };
+        if (this.settings.systemNames.indexOf(employee.name) === -1) {
+          this.graphData.push(line);
+        }
+      });
+
+      // Extract the employees and the not-employees differently
+      tmpSystem = tmpAllEmployees.filter(x => this.settings.systemNames.indexOf(x.name) !== -1);
+      tmpEmployees = tmpAllEmployees.filter(x => this.settings.systemNames.indexOf(x.name) === -1 && x.name !== 'Systeem');
+
+      this.employees = tmpEmployees;
+      this.bottomChartDatasets = this.graphData;
+
+      tmpSystem.forEach(sys => {
+        const dt = this.getPicksPerHour([ sys, ]);
+        sys.graph = [{ data: dt, label: sys.name }];
+      });
+
+      this.system = tmpSystem;
+      this.overall = tmpOverall;
+
+      this.settings.systemNames.forEach(name => {
+        this.data[name] = tmpAllEmployees.filter(x => x.name === name);
+      });
+
+      // Calculate the manual picks percentage
+      tmpOverall.manualpercentage = Math.floor(tmpOverall.manualpicks / (tmpOverall.manualpicks + tmpOverall.autopicks) * 100);
+
+      const empdata = this.getPicksPerHour(tmpEmployees);
+      const totdata = this.getPicksPerHour(tmpEmployees);
+
+      this.EmployeeGraph.data = [{ data: empdata, label: 'Personeel' }];
+      this.TotalGraph.data = [{ data: totdata, label: 'Totaal' }];
+
+      const colors = [];
+      this.bottomChartDatasets.forEach(dataset => {
+        const curColor = this.getRandomColor();
+        colors.push({
+          backgroundColor: this.hexToRgbA(curColor, .9),
+          borderColor: this.hexToRgbA(curColor, .55),
+          pointHoverBackgroundColor: '#fff'
+        });
+      });
+      this.bottomChartColours = colors;
+
+    });
+  }
+
+  initCharts(hours) {
+    this.hours = [];
+    this.brandBoxChartLabels = [];
+    this.bottomChartLabels = [];
+
+    // this.EmployeeGraph.data = [];
+    // this.TotalGraph.data = [];
+
+    for (let i = 0; i < hours.length; i++) {
+      this.hours.push(hours[i].hour);
+    }
+
+    this.brandBoxChartLabels = this.hours;
+    this.bottomChartLabels = this.hours;
+  }
+
+  getPicksPerHour(employees, debug = false) {
+    const result = [];
+    this.hours.forEach(hour => {
+      let curhour = 0;
+      employees.forEach(employee => {
+        if (debug) { console.log('DEBUG', employee.name); }
+        const amount = employee.picks.filter(x => x.hour === hour)[0].picks;
+        curhour += parseInt(amount, 0);
+      });
+      result.push(curhour);
+      curhour = 0;
+    });
+    return result;
+  }
+
+  ngOnInit(): void {
+    this.getData();
+    this.refreshInterval = setInterval(
+      () => {
+        this.getDataOrCached();
+      }, 5000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.refreshInterval);
+  }
+
 }
+

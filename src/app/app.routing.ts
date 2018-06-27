@@ -8,12 +8,26 @@ import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
+import {DatascreenComponent} from "./datascreen/datascreen.component";
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'picks/now',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    data: {
+      title: 'Picks'
+    },
+    children: [
+      {
+        path: 'picks',
+        loadChildren: './views/picks/picks.module#PicksModule'
+      }
+    ]
   },
   {
     path: '404',
@@ -47,7 +61,7 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Home'
+      title: 'Dashboard'
     },
     children: [
       {
@@ -63,7 +77,7 @@ export const routes: Routes = [
         loadChildren: './views/chartjs/chartjs.module#ChartJSModule'
       },
       {
-        path: 'dashboard',
+        path: 'store',
         loadChildren: './views/dashboard/dashboard.module#DashboardModule'
       },
       {
