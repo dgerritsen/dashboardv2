@@ -1,4 +1,26 @@
 const response = (
+
+  [
+    {"Pickings":
+      [
+        {
+        "datetime_start": "1514793600", // 01-01-2018 08:00
+        //                 + 3599
+        "datetime_end": "1514797199", // 01-01-2018 08:59:59
+        "Picked":1,
+        "OrdersCount":1
+      },
+      {
+        "datetime_start": "1514797200", // 01-01-2018 09:00
+        //                 + 3599
+        "datetime_end": "1514800799", // 01-01-2018 09:59:59
+        "Picked":1,
+        "OrdersCount":1
+      },
+
+
+
+
 /* -------------------------------------------
    HTTP GET /api/Reporting/pickings/
 

@@ -1,0 +1,106 @@
+<div class="animated fadeIn">
+
+  <div class="row" *ngIf="totals && mostorders">
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body p-3 d-flex align-items-center">
+          <i class="fa fa-euro text-white bg-red p-3 font-2xl mr-3"></i>
+          <div>
+            <div class="text-value-sm text-danger">{{ revenue }}</div>
+            <div class="text-muted text-uppercase font-weight-bold small">Omzet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body p-3 d-flex align-items-center">
+          <i class="fa fa-handshake-o text-dark bg-primary p-3 font-2xl mr-3"></i>
+          <div>
+            <div class="text-value-sm text-primary">{{ totals.orders }}</div>
+            <div class="text-muted text-uppercase font-weight-bold small">Orders</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body p-3 d-flex align-items-center">
+          <i class="fa fa-indent bg-cyan p-3 font-2xl mr-3"></i>
+          <div>
+            <div class="text-value-sm text-primary">{{ totals.orderlines }}</div>
+            <div class="text-muted text-uppercase font-weight-bold small">Orderregels</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body p-3 d-flex align-items-center">
+          <i class="fa fa-link bg-orange p-3 font-2xl mr-3"></i>
+          <div>
+            <div class="text-value-sm text-warning">{{ totals.quotations }}</div>
+            <div class="text-muted text-uppercase font-weight-bold small">Offertes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body p-3 d-flex align-items-center">
+          <i class="fa fa-list bg-yellow p-3 font-2xl mr-3"></i>
+          <div>
+            <div class="text-value-sm text-warning">{{ totals.quotationlines }}</div>
+            <div class="text-muted text-uppercase font-weight-bold small">Offerteregels</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="card">
+        <div class="card-body p-3 d-flex align-items-center">
+          <i class="fa fa-user bg-green p-3 font-2xl mr-3"></i>
+          <div>
+            <div class="text-value-sm text-success">{{ mostorders.Name }}</div>
+            <div class="text-muted text-uppercase font-weight-bold small">Meeste orders</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card card-accent-primary">
+        <div class="card-header">
+          Ranking
+          <input type="text" id="text-input" name="dates" class="col-lg-2 form-control float-right" placeholder="Text">
+        </div>
+        <div class="card-body p-3">
+          <div *ngIf="table">
+            <ngx-datatable
+              class="material"
+              [rows]="table"
+              [columns]="[{ prop: 'Name', name: 'Naam' }, { prop: 'OrderCount', name: 'Orders' }, { prop: 'OrderLineCount', name: 'Orderregels' }, { prop: 'QuotationCount', name: 'Offertes' }, { prop: 'QuotationLineCount', name: 'Offerteregels' }]"
+              [columnMode]="'force'"
+              [selectionType]="'multiClick'"
+              [sorts]="[{prop: 'OrderCount', dir: 'desc'}, {prop: 'OrderLineCount', dir: 'desc'}]">
+            </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay loader"></div>
+<div class="spinner loader sk-rotating-plane"></div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />

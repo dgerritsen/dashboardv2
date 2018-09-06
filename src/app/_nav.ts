@@ -5,9 +5,24 @@ export const navItems = [
   },
   {
     name: 'Magazijn',
-    url: '/store/now',
+    url: '/picks/now',
     icon: 'fa fa-cubes',
+    // children: [
+    //   {
+    //     name: 'Actueel',
+    //     url: '/picks/now',
+    //   },
+    //   {
+    //     name: 'Geschiedenis',
+    //     url: '/picks/history'
+    //   }
+    // ]
   },
+  {
+    name: 'Verkoop',
+    url: '/sales/now',
+    icon: 'fa fa-euro',
+  }
   // {
   //   title: true,
   //   name: 'Theme'

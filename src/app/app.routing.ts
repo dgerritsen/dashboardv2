@@ -9,6 +9,7 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import {DatascreenComponent} from "./datascreen/datascreen.component";
+import {SalesComponent} from './views/sales/sales.component'
 
 export const routes: Routes = [
   {
@@ -20,12 +21,16 @@ export const routes: Routes = [
     path: '',
     component: DefaultLayoutComponent,
     data: {
-      title: 'Picks'
+      title: 'Dashboard'
     },
     children: [
       {
         path: 'picks',
         loadChildren: './views/picks/picks.module#PicksModule'
+      },
+      {
+        path: 'sales',
+        loadChildren: './views/sales/sales.module#SalesModule'
       }
     ]
   },

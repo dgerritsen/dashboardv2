@@ -41,9 +41,14 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import {Xml2jsService} from "./services/xml2js.service";
 import { DatascreenComponent } from './datascreen/datascreen.component';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {HttpModule} from "@angular/http";
-import {NgxDatatableModule} from "@swimlane/ngx-datatable";
+import {SalesModule} from './views/sales/sales.module';
+import {RestangularModule} from 'ngx-restangular';
+import {NgxEchartsModule} from 'ngx-echarts';
+
+export function RestangularConfigFactory (RestangularProvider) {
+  RestangularProvider.setBaseUrl('https://api.salo.nl/api/v1/Reporting/');
+  RestangularProvider.setDefaultHeaders({'Authorization': 'Token a+Vu0zT8WqXgyMKG4YjvlXGbcfAoXyykjn3kZHUGj3U='});
+}
 
 @NgModule({
   imports: [
@@ -55,9 +60,12 @@ import {NgxDatatableModule} from "@swimlane/ngx-datatable";
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
+    SalesModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
+    RestangularModule.forRoot(RestangularConfigFactory),
     ChartsModule,
+    NgxEchartsModule,
   ],
   declarations: [
     AppComponent,

@@ -1,8 +1,9 @@
 // Here you can add other styles
-.datatable-row-center.datatable-row-group .datatable-body-cell:nth-child(5) span:after {
+.last-percentage .datatable-row-center.datatable-row-group .datatable-body-cell:nth-child(5) span:after {
   content: '%';
   display: inline-block;
 }
+
 
 .datatable-header-cell:not(:nth-child(1)) {
   text-align: right;
@@ -15,4 +16,29 @@
 
 .datatable-header-cell-label {
   font-weight: bold;
+}
+
+$spinkit-spinner-color: #fff;
+@import '../../node_modules/spinkit/scss/spinners/1-rotating-plane';
+
+.loader {
+  display: none;
+}
+
+.spinner {
+  position: absolute;
+  top: calc(50vh - 20px);
+  left: calc(50vw - 20px);
+  z-index: 1040;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: rgba(0,0,0,.4);
+  z-index: 1030;
 }

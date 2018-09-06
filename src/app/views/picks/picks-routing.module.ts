@@ -3,6 +3,7 @@ import { Routes,
   RouterModule } from '@angular/router';
 
 import {PicksComponent} from './picks.component';
+import {PicksHistoryComponent} from './history.component'
 
 const routes: Routes = [
   {
@@ -12,15 +13,22 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: PicksComponent,
     data: {
-      title: 'Dashboard'
+      title: 'Picks'
     },
     children: [
       {
         path: 'now',
+        component: PicksComponent,
         data: {
           title: 'Actueel',
+        }
+      },
+      {
+        path: 'history',
+        component: PicksHistoryComponent,
+        data: {
+          title: 'Geschiedenis',
         }
       },
     ]

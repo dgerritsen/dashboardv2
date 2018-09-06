@@ -1,14 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PicksComponent } from './picks.component';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {PicksRoutingModule} from "./picks-routing.module";
 import {FormsModule} from "@angular/forms";
 import {ChartsModule} from "ng2-charts";
 import {BsDropdownModule, ButtonsModule, ProgressbarModule} from "ngx-bootstrap";
-import {NgxEchartsModule} from 'ngx-echarts';
-import {PicksHistoryComponent} from './history.component';
+import {RestangularModule} from 'ngx-restangular'
+import {SalesComponent} from './sales.component'
+import {SalesRoutingModule} from './sales-routing.module'
+
+export function RestangularConfigFactory (RestangularProvider) {
+  RestangularProvider.setBaseUrl('https://api.salo.nl/api/v1/Reporting/');
+  RestangularProvider.setDefaultHeaders({'Authorization': 'Token a+Vu0zT8WqXgyMKG4YjvlXGbcfAoXyykjn3kZHUGj3U='});
+}
 
 @NgModule({
   imports: [
@@ -16,13 +20,12 @@ import {PicksHistoryComponent} from './history.component';
     HttpClientModule,
     NgxDatatableModule,
     FormsModule,
-    PicksRoutingModule,
+    SalesRoutingModule,
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
     ProgressbarModule.forRoot(),
-    NgxEchartsModule,
   ],
-  declarations: [PicksComponent, PicksHistoryComponent]
+  declarations: [SalesComponent]
 })
-export class PicksModule { }
+export class SalesModule { }

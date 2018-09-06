@@ -5,7 +5,7 @@
         <div class="card-body p-3 d-flex align-items-center">
           <i class="fa fa-thumbs-o-up bg-success p-3 font-2xl mr-3"></i>
           <div>
-            <div class="text-value-sm text-success">{{ most.picks.name }}</div>
+            <div class="text-value-sm text-success">{{ most.picks.Name }}</div>
             <div class="text-muted text-uppercase font-weight-bold small">Meeste Picks ({{ most.picks.amount }})</div>
           </div>
         </div>
@@ -17,7 +17,7 @@
         <div class="card-body p-3 d-flex align-items-center">
           <i class="fa fa-star-o bg-primary p-3 font-2xl mr-3"></i>
           <div>
-            <div class="text-value-sm text-primary">{{ most.orders.name }}</div>
+            <div class="text-value-sm text-primary">{{ most.orders.Name }}</div>
             <div class="text-muted text-uppercase font-weight-bold small">Meeste Orders ({{ most.orders.amount }})</div>
           </div>
         </div>
@@ -29,14 +29,14 @@
         <div class="card-body p-3 d-flex align-items-center">
           <i class="fa fa-line-chart bg-warning p-3 font-2xl mr-3"></i>
           <div>
-            <div class="text-value-sm text-warning">{{ most.ratio.name }}</div>
+            <div class="text-value-sm text-warning">{{ most.ratio.Name }}</div>
             <div class="text-muted text-uppercase font-weight-bold small">Hoogste Ratio ({{ most.ratio.amount }})</div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="graphs">
     <div class="col-sm-6 col-lg-3">
       <div class="brand-card">
         <div class="brand-card-header bg-primary">
@@ -150,7 +150,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="percentageData">
     <div class="col-sm-6 col-lg-6">
       <div class="card">
         <div class="card-body">
@@ -165,7 +165,7 @@
     </div>
 
     <div class="col-sm-6 col-lg-6">
-      <div class="card">
+      <div class="card" *ngIf="percentageData">
         <div class="card-body">
           <button type="button" class="btn btn-transparent text-muted p-0 float-right">
             <i class="icon-pencil icons"></i>
@@ -186,41 +186,48 @@
       <div class="card card-accent-primary">
         <div class="card-header">
           Ranking
+          <input type="text" id="text-input" name="pickdates" class="col-lg-2 form-control float-right" placeholder="Text">
         </div>
         <div class="card-body p-3">
-          <div *ngIf="table">
+          <div *ngIf="table" class="last-percentage">
             <ngx-datatable
               class="material"
               [rows]="table"
-              [columns]="[{ prop: 'name', name: 'Naam' }, { prop: 'total.picks', name: 'Picks' }, { prop: 'total.orders', name: 'Orders' }, { prop: 'ratio', name: 'P/O Ratio' }, { prop: 'percentages.picks', name: 'Percentage' }]"
+              [columns]="[{ prop: 'Name', name: 'Naam' }, { prop: 'total.picks', name: 'Picks' }, { prop: 'total.orders', name: 'Orders' }, { prop: 'ratio', name: 'P/O Ratio' }, { prop: 'percentages.picks', name: 'Percentage' }]"
               [columnMode]="'force'"
               [selectionType]="'multiClick'"
               [sorts]="[{prop: 'total.picks', dir: 'desc'}]">
             </ngx-datatable>
+          </div>
+          <div *ngIf="!graphs">
+            Geen data in het opgegeven bereik.<br/>
+            Kies rechtsboven andere datums.
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="card card-accent-success">
-        <div class="card-header">
-          Grafiek Picks Personeel Per Uur
+  <div class="row" *ngIf="graphs">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <div echarts style="height: 350px;" [options]="graphs.bottomtwo" *ngIf="graphs"></div>
         </div>
-        <div class="card-body p-3">
-          <div class="chart-wrapper" style="position: relative; height:300px;" *ngIf="graphs">
-            <canvas baseChart class="chart"
-                    [datasets]="graphs.bottom.data"
-                    [labels]="graphs.bottom.labels"
-                    [options]="graphs.bottom.options"
-                    [colors]="graphs.bottom.colors"
-                    [legend]="graphs.bottom.legend"
-                    [chartType]="graphs.bottom.type"></canvas>
-          </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-body">
+          <div echarts style="height: 350px;" [options]="graphs.piechart" *ngIf="graphs"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<div class="overlay loader"></div>
+<div class="spinner loader sk-rotating-plane"></div>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
